@@ -12,7 +12,7 @@ resources:
 - repo: self
 
 variables:
-  dockerfilePath: './Aspnetcoreapp/Dockerfile'
+  dockerfilePath: './Docker-compose-dotnet-core-and-mssql/Aspnetcoreapp/Dockerfile'
   imageName: 'xdealboo/phxtraining:002'
 
 stages:
