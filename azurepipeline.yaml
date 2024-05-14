@@ -23,12 +23,7 @@ stages:
     displayName: 'Build and Push Docker Image'
     pool:
       name: PHX
-    steps:
-    - task: Docker@2
-      displayName: 'Build Docker image'
+    steps:    
+    - task: CmdLine@2
       inputs:
-        command: 'build'
-        dockerfile: '$(dockerfilePath)'
-        tags: '$(imageName)'
-        containerRegistry: 'MY_DOCKER_HUB'
-        arguments: '--no-cache .'
+       script: 'docker build -f $(dockerfilePath) -t $(imageName) .'
