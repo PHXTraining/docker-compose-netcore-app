@@ -27,4 +27,4 @@ stages:
     - task: CmdLine@2
       inputs:
        script: 'docker build -f $(dockerfilePath) -t $(imageName) .'
-       workingDirectory: '/Docker-compose-dotnet-core-and-mssql'
+       workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
