@@ -12,7 +12,7 @@ resources:
 - repo: self
 
 variables:
-  dockerfilePath: 'Docker-compose-dotnet-core-and-mssql/Aspnetcoreapp/Dockerfile'
+  dockerfilePath: 'Aspnetcoreapp/Dockerfile'
   imageName: 'xdealboo/phxtraining:002'
 
 stages:
@@ -27,3 +27,4 @@ stages:
     - task: CmdLine@2
       inputs:
        script: 'docker build -f $(dockerfilePath) -t $(imageName) .'
+       workingDirectory: '/Docker-compose-dotnet-core-and-mssql'
