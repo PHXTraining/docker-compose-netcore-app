@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:latest
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine
 COPY src /app
 WORKDIR /app
 RUN ["dotnet", "restore"]

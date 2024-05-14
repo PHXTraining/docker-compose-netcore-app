@@ -11,7 +11,6 @@ namespace DotNetCoreApp
     {
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(LogLevel.Error);
             app.Run(context =>
             {
                 var cookies = context.Request.Cookies;
@@ -29,11 +28,7 @@ namespace DotNetCoreApp
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .ConfigureLogging((factory) =>
-                {
-                    factory.AddConsole(LogLevel.Error);
-                })
+            var host = new WebHostBuilder()              
                 .UseKestrel()
                 .UseStartup<Startup>()
                 .Build();
