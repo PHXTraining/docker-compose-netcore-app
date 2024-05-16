@@ -33,5 +33,4 @@ stages:
           Dockerfile: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql/Aspnetcoreapp/Dockerfile'
           tags: |
             $(Build.BuildId)
-             $(Build.SourceVersion)
-             latest
+            latest
