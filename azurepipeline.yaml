@@ -46,5 +46,5 @@ stages:
      - checkout: self
      - task: CmdLine@2
        inputs:
-         script: 'docker compose up'
+         script: 'docker compose up -d'
          workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
