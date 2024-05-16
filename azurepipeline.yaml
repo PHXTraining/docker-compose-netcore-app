@@ -44,9 +44,7 @@ stages:
       name: PHX
     steps:
      - checkout: self
-     - task: DockerCompose@0
+     - task: CmdLine@2
        inputs:
-         containerregistrytype: 'Container Registry'
-         dockerRegistryEndpoint: 'MY_DOCKER_HUB'
-         dockerComposeFile: 'Docker-compose-dotnet-core-and-mssql/docker-compose.yml'
-         action: 'Run a Docker Compose command'
+         script: 'docker compose up'
+         workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
