@@ -13,14 +13,15 @@ resources:
 
 variables:
   dockerfilePath: 'Aspnetcoreapp/Dockerfile'
-  imageName: 'xdealboo/phxtraining:002'
+  imageName: 'xdealboo/phxtraining'
+
 
 stages:
 - stage: Build_and_Push
   displayName: 'Build and Push Docker Image'
   jobs:
   - job: Build_and_Push_Job
-    displayName: 'Build and Push Docker Image'
+    displayName: 'Build Image'
     pool:
       name: PHX
     steps:    
@@ -28,3 +29,12 @@ stages:
       inputs:
        script: 'docker build -f $(dockerfilePath) -t $(imageName) .'
        workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'MY_DOCKER_HUB'
+        repository: 'xdealboo/phxtraining'
+        command: 'push'
+        tags: |
+          $(Build.BuildId)
+          $(Build.SourceVersion)
+          latest
