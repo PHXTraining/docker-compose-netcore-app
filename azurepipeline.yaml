@@ -34,3 +34,24 @@ stages:
           tags: |
             $(Build.BuildId)
             latest
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      name: PHX
+    steps:
+     - checkout: self
+     - task: Bash@3
+       displayName: Update Docker Compose file and deploy
+       inputs:
+         targetType: 'inline'
+        inputs:
+        targetType: 'inline'
+        script: |
+          sed -i 's|image:.*$|image: $(containerRegistry)/xdealboo/phxtraining:$(Build.BuildId)|g' $(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yml
+          docker-compose -f $(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yml up -d
+    env:
+      containerRegistry: 'MY_DOCKER_HUB'd
