@@ -30,7 +30,7 @@ stages:
           containerRegistry: 'MY_DOCKER_HUB'
           repository: 'xdealboo/phxtraining'
           command: 'buildAndPush'
-          Dockerfile: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql/Aspnetcoreapp/Dockerfile'
+          Dockerfile: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql/Dockerfile'
           tags: |
             $(Build.BuildId)
             latest
