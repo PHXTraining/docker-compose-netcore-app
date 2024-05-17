@@ -46,5 +46,14 @@ stages:
      - checkout: self
      - task: CmdLine@2
        inputs:
+        script: |
+          sed -i 's/xdealboo/phxtraining:001/xdealboo/phxtraining:$(Build.BuildId)/g' $(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml
+     - task: CmdLine@2
+       inputs:
          script: 'docker compose up -d'
          workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
+     - task: CmdLine@2
+       inputs:
+        script: |
+          sed -i 's/old_image_name:tag/new_image_name:tag/g' $(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml
+       
