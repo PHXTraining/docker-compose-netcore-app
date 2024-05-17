@@ -48,7 +48,7 @@ stages:
        inputs:
           targetType: 'inline'
           script: |
-            $composePath = "$(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml"
+            $composePath = "$(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yml"
             $content = Get-Content -Path $composePath -Raw
             $newContent = $content -replace 'xdealboo/phxtraining:001', 'xdealboo/phxtraining:$(Build.BuildId)'
             Set-Content -Path $composePath -Value $newContent
