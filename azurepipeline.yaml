@@ -47,13 +47,11 @@ stages:
      - task: CmdLine@2
        inputs:
         script: |
-          sed -i 's/xdealboo/phxtraining:001/xdealboo/phxtraining:$(Build.BuildId)/g' $(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml
+          $composePath = "$(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml"
+          $content = Get-Content -Path $composePath -Raw
+          $newContent = $content -replace 'xdealboo/phxtraining:001', 'xdealboo/phxtraining:$(Build.BuildId)'
+          Set-Content -Path $composePath -Value $newContent
      - task: CmdLine@2
        inputs:
          script: 'docker compose up -d'
          workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
-     - task: CmdLine@2
-       inputs:
-        script: |
-          sed -i 's/old_image_name:tag/new_image_name:tag/g' $(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml
-       
