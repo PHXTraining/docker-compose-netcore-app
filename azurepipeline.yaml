@@ -44,14 +44,16 @@ stages:
       name: PHX
     steps:
      - checkout: self
-     - task: CmdLine@2
+     - task: PowerShell@2
        inputs:
-        script: |
-          $composePath = "$(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml"
-          $content = Get-Content -Path $composePath -Raw
-          $newContent = $content -replace 'xdealboo/phxtraining:001', 'xdealboo/phxtraining:$(Build.BuildId)'
-          Set-Content -Path $composePath -Value $newContent
+          targetType: 'inline'
+          script: |
+            $composePath = "$(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yaml"
+            $content = Get-Content -Path $composePath -Raw
+            $newContent = $content -replace 'xdealboo/phxtraining:001', 'xdealboo/phxtraining:$(Build.BuildId)'
+            Set-Content -Path $composePath -Value $newContent
      - task: CmdLine@2
        inputs:
          script: 'docker compose up -d'
          workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
+      
