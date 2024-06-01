@@ -15,7 +15,6 @@ variables:
   dockerfilePath: 'Aspnetcoreapp/Dockerfile'
   imageName: 'xdealboo/phxtraining'
 
-
 stages:
 - stage: Build_and_Push
   displayName: 'Build and Push Docker Image'
@@ -23,7 +22,7 @@ stages:
   - job: Build_and_Push_Job
     displayName: 'Build Image'
     pool:
-      name: PHX
+      name: 'PHX' # Using a default Microsoft-hosted agent
     steps:    
       - task: Docker@2
         inputs:
@@ -34,26 +33,30 @@ stages:
           tags: |
             $(Build.BuildId)
             latest
+
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build_and_Push
   jobs:
-  - job: Deploy
+  - deployment: Deploy
     displayName: Deploy
+    environment: 'development' # Specifying the environment as development
     pool:
-      name: PHX
-    steps:
-     - checkout: self
-     - task: PowerShell@2
-       inputs:
-          targetType: 'inline'
-          script: |
-            $composePath = "$(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yml"
-            $content = Get-Content -Path $composePath -Raw
-            $newContent = $content -replace 'xdealboo/phxtraining:001', 'xdealboo/phxtraining:$(Build.BuildId)'
-            Set-Content -Path $composePath -Value $newContent
-     - task: CmdLine@2
-       inputs:
-         script: 'docker compose up -d'
-         workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
-      
+      name: 'PHX' # Using a default Microsoft-hosted agent
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                $composePath = "$(System.DefaultWorkingDirectory)/Docker-compose-dotnet-core-and-mssql/docker-compose.yml"
+                $content = Get-Content -Path $composePath -Raw
+                $newContent = $content -replace 'xdealboo/phxtraining:001', 'xdealboo/phxtraining:$(Build.BuildId)'
+                Set-Content -Path $composePath -Value $newContent
+          - task: CmdLine@2
+            inputs:
+              script: 'docker compose up -d'
+              workingDirectory: '$(Build.SourcesDirectory)/Docker-compose-dotnet-core-and-mssql'
